@@ -360,4 +360,5 @@ pip-selfcheck.json
 easylearn/media/
 
 
-easylearn/.vscode/*
+.vscode/*
+
