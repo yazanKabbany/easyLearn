@@ -15,6 +15,6 @@ class CommentInline(admin.TabularInline):
 class BlogPostAdmin(admin.ModelAdmin):
     inlines = [CommentInline]
     list_display = ['title', 'writer', 'get_summary']
-
+    list_filter = ['create_date']
 
 admin.site.register(BlogPost, BlogPostAdmin)
