@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from blog.models import BlogPost
+from blog.models import BlogPost, POST_SUMMARY_LENGTH
 from easylearn.users.models import User
 
 # Create your tests here.
@@ -11,7 +11,9 @@ class BlogPostModelTest(TestCase):
         self.user = User.objects.create_user('yazan')
         self.user2 = User.objects.create_user('habib')
         self.post = BlogPost.objects.create(title='some title', 
-                                        text='some text', writer=self.user)  
+                                        text='some text', writer=self.user)
+        self.long_post = BlogPost.objects.create(title="A very Long Post",
+                                        text=500*'long ', writer=self.user2)
     def test_unique_slug(self):
         """
         two post with identical titles should different slugs
@@ -40,4 +42,12 @@ class BlogPostModelTest(TestCase):
         self.post.title = "Changed title"
         self.post.save()
         self.assertEqual(previus_slug, self.post.slug)
+    
+    def test_get_summary(self):
+        """
+        summary for long post equals POST_SUMMARY_LENGTH + 3
+        summary for small post equals len(post.text)
+        """
+        self.assertEqual(len(self.long_post.get_summary()), POST_SUMMARY_LENGTH+3)
+        self.assertEqual(self.post.get_summary(), self.post.text)
         
