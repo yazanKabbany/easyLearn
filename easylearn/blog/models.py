@@ -54,7 +54,7 @@ class Comment(models.Model):
 
     # TODO: Define fields here
     post = models.ForeignKey(BlogPost, models.CASCADE, blank=False)
-    text = models.CharField(max_length=500, blank=False)
+    text = models.TextField(max_length=500, blank=False)
     create_date = models.DateTimeField(auto_now_add=True)
     writer = models.ForeignKey('users.User', on_delete=models.CASCADE, blank=False)
 
