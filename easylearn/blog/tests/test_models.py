@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from blog.models import BlogPost, Comment, POST_SUMMARY_LENGTH
+from blog.models import BlogPost, Comment, Following, Rating, POST_SUMMARY_LENGTH
 from easylearn.users.models import User
 
 # Create your tests here.
@@ -70,5 +70,43 @@ class CommentTest(TestCase):
         self.assertEqual(comment.writer, self.user)
 
         
+class RatingTest(TestCase):
+
+    def setUp(self):
+        self.user = User.objects.create_user('samir')
+        self.user2 = User.objects.create_user('Hbib again')
+        self.post = BlogPost.objects.create(title='some title', 
+                                        text='some text', writer=self.user)
+        self.value = 4
+                                
+    def test_create(self):
+        """simple creation test"""
+        rating = Rating.objects.create(rater=self.user2, post=self.post, value=self.value)
+        rating.save()
+        self.assertEqual(rating.rater, self.user2)
+        self.assertEqual(rating.post, self.post)
+        self.assertEqual(rating.value, self.value)
+    
+    def test_value_out_of_range(self):
+        """rating values out of range [0, 5] are not allowed"""
+        rating = Rating(rater=self.user2, post=self.post, value=6)
+        with self.assertRaises(ValidationError):
+            rating.save()
         
+        rating = Rating(rater=self.user2, post=self.post, value=0)
+        with self.assertRaises(ValidationError):
+            rating.save()
+
+class FollowingTest(TestCase):
+
+    def setUp(self):
+        self.user = User.objects.create_user('samir')
+        self.user2 = User.objects.create_user('jack')
+    
+    def test_create(self):
+        """simple creation test"""
+        following = Following(follower=self.user, followed=self.user2)
+        following.save()
+        self.assertEqual(following.follower, self.user)
+        self.assertEqual(following.followed, self.user2)
         

@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 from markdown import markdown
 from slugify import UniqueSlugify
 
@@ -48,11 +49,13 @@ class BlogPost(models.Model):
     def get_summary_as_markdown(self):
         return markdown(self.text)
 
+    def get_rating_avg(self):
+        return self.objects.Ratings.aggregate(models.Avg('value'))
+
 
 class Comment(models.Model):
     """Model definition for Comment."""
 
-    # TODO: Define fields here
     post = models.ForeignKey(BlogPost, models.CASCADE, blank=False)
     text = models.TextField(max_length=500, blank=False)
     create_date = models.DateTimeField(auto_now_add=True)
@@ -71,4 +74,49 @@ class Comment(models.Model):
 
     def get_absolute_url(self):
         # TODO: implement absolute url
+        pass
+
+
+class Rating(models.Model):
+    """Model definition for Rating."""
+
+    rate_date = models.DateTimeField(auto_now_add=True)
+    rater = models.ForeignKey('users.User', on_delete=models.CASCADE)
+    post = models.ForeignKey(BlogPost, on_delete=models.CASCADE, related_name='Ratings')
+    value = models.IntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(5)],
+        blank=False
+    )
+
+    class Meta:
+        """Meta definition for Rating."""
+
+        verbose_name = 'Rating'
+        verbose_name_plural = 'Ratings'
+
+    def __str__(self):
+        """Unicode representation of Rating."""
+        return '{} rates {} with {} start'.format(self.rater, self.post, self.value)
+
+
+class Following(models.Model):
+    """Model definition for Following."""
+
+    follower = models.ForeignKey('users.User', on_delete=models.CASCADE, 
+    related_name='followed')
+    followed = models.ForeignKey('users.User', on_delete=models.CASCADE,
+    related_name='followers')
+
+    class Meta:
+        """Meta definition for Following."""
+
+        verbose_name = 'Following'
+        verbose_name_plural = 'Followings'
+
+    def __str__(self):
+        """Unicode representation of Following."""
+        return '{} follows {}'.format(self.follower, self.followed)
+    
+    def get_absolute_url(self):
+        # TODO : implement get_absolute_url
         pass
