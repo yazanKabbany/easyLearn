@@ -93,6 +93,7 @@ class Rating(models.Model):
 
         verbose_name = 'Rating'
         verbose_name_plural = 'Ratings'
+        unique_together = ("rater", "post")
 
     def __str__(self):
         """Unicode representation of Rating."""
