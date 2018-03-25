@@ -12,7 +12,6 @@ def check_unique_slug(text, *args):
 class BlogPost(models.Model):
     """Model definition for BlogPost."""
 
-    # TODO: Define fields here
     title = models.CharField(max_length=50, blank = False)
     slug = models.SlugField(blank=True)
     text = models.TextField(blank=False, max_length=4000)
@@ -37,8 +36,8 @@ class BlogPost(models.Model):
         return super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        # TODO: Implement absolute url
-        pass
+        from django.core.urlresolvers import reverse
+        return reverse('blog.blog_post', kwargs={'pk': self.pk})
 
     def get_summary(self):
         summary = self.text[:POST_SUMMARY_LENGTH]
@@ -72,9 +71,6 @@ class Comment(models.Model):
         """Unicode representation of Comment."""
         return self.text
 
-    def get_absolute_url(self):
-        # TODO: implement absolute url
-        pass
 
 
 class Rating(models.Model):
@@ -118,6 +114,4 @@ class Following(models.Model):
         """Unicode representation of Following."""
         return '{} follows {}'.format(self.follower, self.followed)
     
-    def get_absolute_url(self):
-        # TODO : implement get_absolute_url
-        pass
+
