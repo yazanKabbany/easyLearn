@@ -1,60 +1,55 @@
-{% extends "base.html" %}
-{% load staticfiles %}
+{% extends "base.html" %} {% load staticfiles %} {% block content %}
 
+<div class="container-fluid" dir="rtl" <div class="container-fluid">
+        <div class="row">
+                <div class="">
+                        <button class="btn btn-primary" id="h1-btn">
+                                H1
+                        </button>
 
+                        <button class="btn btn-primary" id="h2-btn">
+                                H2
+                        </button>
 
+                        <button class="btn btn-primary" id="h3-btn">
+                                H3
+                        </button>
 
-{% block content %}
-<div class="container-fluid" dir="rtl"
-<div class="container-fluid">
-    <div class="row">
-    <div class="col-md-1">
-        <button class="btn btn-primary">
-            x
-      </button>
-    </div>
-    <div class="col-md-1">
-    <button class="btn btn-default">
-            x
-      </button>
+                        <button class="btn btn-primary" id="bold-btn">
+                                <strong>B</strong>
+                        </button>
 
-    </div>
-     
-    <div class="col-md-1">
-
-    <button class="btn btn-default">
-            x
-    </button>
-    </div>
-    <div class="col-md-1">
-
-    <button class="btn btn-default">
-            x
-    </button>
-    </div>
-    <div class="col-md-1">
-
-    <button class="btn btn-default">
-            x
-    </button>
-    </div>
-    <div class="col-md-1">
-
-    <button class="btn btn-default">
-            x
-    </button>
-    </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-        <form method="POST">
-            {% csrf_token %}
-            {{form.as_p}}
-            <button type="submit" class="btn btn-primary">Post</button>
-        </form>
-    </div>
+                        <button class="btn btn-primary" id="italic-btn">
+                                <em>i</em>
+                        </button>
+                        <button class="btn btn-primary" id="o-list-btn">
+                                o-list
+                        </button>
+                        <button class="btn btn-primary" id="u-list-btn">
+                                u-list
+                        </button>
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                        <form method="POST">
+                                {% csrf_token %} {{form.as_p}}
+                                <button type="submit" class="btn btn-primary">Post</button>
+                        </form>
+                </div>
+        </div>
 </div>
 </div>
-  </div>
-  </div>
+</div>
 {% endblock content %}
+
+
+{% block javascript %}
+       <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="{% static 'js/write.js' %}"></script> 
+{% endblock javascript %}
+        
+
+
+
+        
