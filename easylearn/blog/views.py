@@ -20,7 +20,7 @@ class BlogPostCreateView(LoginRequiredMixin, CreateView):
 
 class BlogPostDetailView(LoginRequiredMixin, DetailView):
     model = BlogPost
-    #template_name = ""
+    template_name = "blog/post_details.html"
     pk_url_kwarg = 'pk'
     slug_url_kwarg = 'slug'
     query_pk_and_slug = True
@@ -29,8 +29,14 @@ class BlogPostDetailView(LoginRequiredMixin, DetailView):
 
 class BlogPostFeedListView(LoginRequiredMixin, ListView):
     model = BlogPost
-    #template_name = "TEMPLATE_NAME"
+    template_name = "blog/post_feed.html"
+    paginate_by = 10
 
+    def get_queryset(self):
+        user = self.request.user
+        followed_ids = user.followed.all().values_list('followed', flat=True)
+        queryset = BlogPost.objects.filter(writer__in=followed_ids)
+        return queryset
 
 class RecommendedBlogPostsListView(LoginRequiredMixin, ListView):
     model = BlogPost

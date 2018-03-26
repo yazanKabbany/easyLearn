@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.core.validators import MaxValueValidator, MinValueValidator
 from markdown import markdown
 from slugify import UniqueSlugify
@@ -36,8 +37,7 @@ class BlogPost(models.Model):
         return super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        from django.core.urlresolvers import reverse
-        return reverse('blog.blog_post', kwargs={'pk': self.pk})
+        return reverse('blog:blog_post_slug', kwargs={'slug': self.slug})
 
     def get_summary(self):
         summary = self.text[:POST_SUMMARY_LENGTH]
@@ -109,6 +109,7 @@ class Following(models.Model):
 
         verbose_name = 'Following'
         verbose_name_plural = 'Followings'
+        unique_together = ("follower", "followed")
 
     def __str__(self):
         """Unicode representation of Following."""
