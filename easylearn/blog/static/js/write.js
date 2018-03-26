@@ -2,22 +2,34 @@ $('#h1-btn').click(
     function()
     {
         var text = $('#post-text').val();
-        $('#post-text').val(text+"\n# ").focus();
-        //$('#post-text').focus()
+        if (!text.endsWith('\n') && text.length != 0)
+        {
+            text += "\n";
+        }
+        $('#post-text').val(text+"# ").focus();
+        
     }
 )
 $('#h2-btn').click(
     function()
     {
         var text = $('#post-text').val();
-        $('#post-text').val(text+"\n## ").focus();
+        if (!text.endsWith('\n') && text.length != 0)
+        {
+            text += "\n";
+        }
+        $('#post-text').val(text+"## ").focus();
     }
 )
 $('#h3-btn').click(
     function()
     {
         var text = $('#post-text').val();
-        $('#post-text').val(text+"\n### ").focus();
+        if (!text.endsWith('\n') && text.length != 0)
+        {
+            text += "\n";
+        }
+        $('#post-text').val(text+"### ").focus();
     }
 )
 $('#bold-btn').click(
@@ -38,13 +50,21 @@ $('#o-list-btn').click(
     function()
     {
         var text = $('#post-text').val();
-        $('#post-text').val(text+"\n1.  عنصر لائحة مرتبة").focus();
+        if (!text.endsWith('\n') && text.length != 0)
+        {
+            text += "\n";
+        }
+        $('#post-text').val(text+"1.  عنصر لائحة مرتبة").focus();
     }
 )
 $('#u-list-btn').click(
     function()
     {
         var text = $('#post-text').val();
-        $('#post-text').val(text+"\n+  عنصر لائحة غير مرتبة").focus();
+        if (!text.endsWith('\n') && text.length != 0)
+        {
+            text += "\n";
+        }
+        $('#post-text').val(text+"+  عنصر لائحة غير مرتبة").focus();
     }
 )
