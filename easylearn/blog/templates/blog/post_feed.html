@@ -1,0 +1,75 @@
+{% extends 'base.html' %} 
+{% load staticfiles %} 
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">                   
+            {% for post in object_list %}
+                <div class="post-preview" dir="rtl">
+                    <a href="{{post.get_absolute_url}}">
+                        <h2 class="post-title arabic-text">
+                            {{post.title}}
+                        </h2>
+                        <h3 class="post-subtitle arabic-text">
+                            {{post.get_summary}}
+                        </h3>
+                    </a>
+                    <p class="post-meta arabic-text"> نشر من قبل
+                        <a href="{{post.writer.get_absolute_url}}">{{post.writer.username}}</a>
+                        في
+                        {{post.create_date | date:"j, n, Y"}}
+                    </p>
+                </div>
+            {% empty %}
+                <h2>لا يوجد المزيد من المنشورات</h2>
+            {% endfor %}
+
+            <!-- Pager -->
+            <div class="clearfix">
+                <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto"> 
+        <style>
+                .pagination>li>a, .pagination>li>span { border-radius: 50% !important;margin: 0 5px;}
+        </style>
+        <ul class="pagination">
+
+                {% if page_obj.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></li>
+                {% else %}
+                    <li class="page-item disabled"><span><i class="fa fa-chevron-left" aria-hidden="true"></i></span></li>
+                {% endif %}
+                
+                {% if page_obj.number|add:'-4' > 1 %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.number|add:'-5' }}">&hellip;</a></li>
+                {% endif %}
+                
+                {% for i in page_obj.paginator.page_range %}
+                    {% if page_obj.number == i %}
+                        <li class="page-item active"><a class="page-link" href="#"><span>{{ i }} <span class="sr-only">(current)</span></span></a></li>
+                    {% elif i > page_obj.number|add:'-5' and i < page_obj.number|add:'5' %}
+                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if page_obj.paginator.num_pages > page_obj.number|add:'4' %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.number|add:'5' }}">&hellip;</a></li>
+                {% endif %}
+                
+                {% if page_obj.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+                {% else %}
+                    <li class="page-item disabled"><span><i class="fa fa-chevron-right" aria-hidden="true"></i></span></li>
+                {% endif %}
+                
+                </ul>
+            </div>
+        </div>
+</div>
+
+{% endblock content %}

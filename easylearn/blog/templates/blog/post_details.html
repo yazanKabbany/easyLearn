@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block page_heading %}{{object.title}}{% endblock page_heading %}
+{% block page_subheading %}{% endblock page_subheading %}
+{% block content %}
+<article>
+    <div class="container" dir="rtl">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+         {{ object.get_summary_as_markdown |safe}}
+        </div>
+      </div>
+    </div>
+  </article>
+
+{% endblock content %}
+    
