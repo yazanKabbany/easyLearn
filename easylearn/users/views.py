@@ -3,13 +3,21 @@ from django.urls import reverse
 from django.views.generic import DetailView, ListView, RedirectView, UpdateView
 
 from .models import User
-
+from blog.models import Following
 
 class UserDetailView(LoginRequiredMixin, DetailView):
     model = User
     # These next two lines tell the view to index lookups by username
     slug_field = 'username'
     slug_url_kwarg = 'username'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add a boolean indicator of user following
+        user = self.request.user
+        context['followed'] = Following.objects.filter(follower=user, followed=self.object).exists()
+        return context
 
 
 class UserRedirectView(LoginRequiredMixin, RedirectView):

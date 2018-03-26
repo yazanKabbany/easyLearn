@@ -1,6 +1,5 @@
 from django.urls import include, path
-from .views import BlogPostCreateView, BlogPostDetailView, BlogPostFeedListView, UserPostsListView\
-, RecommendedBlogPostsListView
+from blog.views import BlogPostCreateView, BlogPostDetailView, BlogPostFeedListView, RecommendedBlogPostsListView
 app_name = 'blog'
 
 urlpatterns = [
@@ -9,5 +8,5 @@ urlpatterns = [
     path('<slug:slug>/',BlogPostDetailView.as_view() ,name='blog_post_slug'),
     path('',BlogPostFeedListView.as_view() , name='feed'),
     path('recommended/',RecommendedBlogPostsListView.as_view() , name='recommended'),
-    path('users/<username>/', UserPostsListView.as_view(), name='user_details')
+    #path('users/<username>/', UserPostsListView.as_view(), name='user_details')
 ]

@@ -28,6 +28,27 @@
 
 </div>
 <!-- End Action buttons -->
+{% else %}
+  {% if followed %}
+   <div class="row">
+      <form method="POST" name="unfollow" action="{% url 'users:unfollow' object.username %}">
+          {% csrf_token %}
+      <div class="col-sm-12">    
+          <button type="submit" value="unfollow" class="btn btn-primary">Unfollow</button>
+      </div>
+      </form>
+    </div>
+  {% else %}
+    <div class="row">
+      <form method="POST" name="follow" action="{% url 'users:follow' object.username %}">
+          {% csrf_token %}
+      <div class="col-sm-12">    
+          <button type="submit" value="follow" class="btn btn-primary">Follow</button>
+      </div>
+      </form>
+    </div>
+  {% endif %}
+  
 {% endif %}
 
 

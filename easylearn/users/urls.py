@@ -1,6 +1,8 @@
 from django.conf.urls import url
+from django.urls import path
 
 from . import views
+from blog.views import follow_view, unfollow_view 
 
 app_name = 'users'
 urlpatterns = [
@@ -24,4 +26,15 @@ urlpatterns = [
         view=views.UserDetailView.as_view(),
         name='detail'
     ),
+    path(
+        '<slug:username>/follow/',
+        follow_view,
+        name='follow'
+    ),
+    path(
+        '<slug:username>/unfollow/',
+        unfollow_view,
+        name='unfollow'
+    )
+    
 ]

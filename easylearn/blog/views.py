@@ -1,10 +1,13 @@
 from django.shortcuts import render
 from django.views.generic import CreateView, DetailView, ListView
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from blog.forms import BlogPostForm
-from blog.models import BlogPost
+from blog.models import BlogPost, Following
+from easylearn.users.models import User
 # Create your views here.
 
 
@@ -42,7 +45,24 @@ class RecommendedBlogPostsListView(LoginRequiredMixin, ListView):
     model = BlogPost
     #template_name = "TEMPLATE_NAME"
 
+@login_required
+def follow_view(request, username):
+    curent_user = request.user
+    other_user = User.objects.get(username=username)
+    if Following.objects.filter(follower=curent_user, followed=other_user).exists():
+        return HttpResponseRedirect(other_user.get_absolute_url())
+    
+    following = Following(follower=curent_user, followed=other_user)
+    following.save()
+    return HttpResponseRedirect(other_user.get_absolute_url())
 
-class UserPostsListView(LoginRequiredMixin, ListView):
-    model = BlogPost
-    #template_name = "TEMPLATE_NAME"
+@login_required
+def unfollow_view(request, username):
+    curent_user = request.user
+    other_user = User.objects.get(username=username)
+    following = Following.objects.filter(follower=curent_user, followed=other_user)
+    if not following.exists():
+        return HttpResponseRedirect(other_user.get_absolute_url())
+    
+    following.delete()
+    return HttpResponseRedirect(other_user.get_absolute_url())
