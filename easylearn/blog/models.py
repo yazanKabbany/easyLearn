@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.core.validators import MaxValueValidator, MinValueValidator
 from markdown import markdown
 from slugify import UniqueSlugify
+from bs4 import BeautifulSoup
 
 POST_SUMMARY_LENGTH = 250
 
@@ -40,7 +41,8 @@ class BlogPost(models.Model):
         return reverse('blog:blog_post_slug', kwargs={'slug': self.slug})
 
     def get_summary(self):
-        summary = self.text[:POST_SUMMARY_LENGTH]
+        soup = BeautifulSoup(self.get_summary_as_markdown())
+        summary = soup.text[:POST_SUMMARY_LENGTH]
         if len(self.text) > POST_SUMMARY_LENGTH:
             summary += '...'
         return summary

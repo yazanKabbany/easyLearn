@@ -42,3 +42,4 @@ redis>=2.10.5
 
 # Your custom requirements go here
 Markdown==2.6.11 # for Markdown support
+bs4==0.0.1
