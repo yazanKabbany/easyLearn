@@ -6,6 +6,7 @@
 {{ block.super }}
 <link rel="stylesheet" href="{% static 'css/comments.css' %}">
 <link rel="stylesheet" href="{% static 'css/rate.css' %}">
+<link rel="stylesheet" href="{% static 'css/comment_block.css'%}">
 {% endblock %}
 {% block content %}
 <article>
@@ -44,6 +45,21 @@
     </div>
   </div>
 </div>
+<!--write comment -->
+<div class="row" dir="rtl">
+    
+  <div class="col-md-6">
+              <div class="widget-area no-padding blank">
+              <div class="status-upload">
+                <form>
+                  <textarea placeholder="اكتب تعليقاً" ></textarea>
+                  <button type="submit" class="btn btn-primary"><i class="fa fa-share"></i>انشر</button>
+                </form>
+              </div><!-- Status Upload  -->
+            </div><!-- Widget Area -->
+          </div>      
+  </div>
+
 <!-- comments -->
 <section class="comments" dir="rtl">
   {% for comment in  object.comment_set.all %}
