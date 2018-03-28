@@ -2,6 +2,11 @@
 {% load staticfiles %}
 {% block page_heading %}{{object.title}}{% endblock page_heading %}
 {% block page_subheading %}{% endblock page_subheading %}
+{% block css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'css/comments.css' %}">
+<link rel="stylesheet" href="{% static 'css/rate.css' %}">
+{% endblock %}
 {% block content %}
 <article>
     <div class="container" dir="rtl">
@@ -13,5 +18,57 @@
     </div>
   </article>
 
+<!--rating block -->
+<div class="row rate" dir="rtl">
+  <div class="col-md-12">
+    <div class="rating-block">
+      <h4>متوسط التقييمات</h4>
+      <h2 class="bold padding-bottom-7">{{object.get_rating_avg}}<small>\ 5</small></h2>
+
+        <a href="{%url 'blog:rate' pk=object.pk value=1%}"><button type="button" class="btn btn-warning btn-sm" aria-label="Left Align" id=star-1>
+          <span class="fa fa-star" aria-hidden="true"></span>
+        </button></a>
+        <a href="{%url 'blog:rate' pk=object.pk value=2%}"><button type="button" class="btn btn-warning btn-sm" aria-label="Left Align" id=star-2>
+          <span class="fa fa-star" aria-hidden="true"></span>
+        </button></a>
+        <a href="{%url 'blog:rate' pk=object.pk value=3%}"><button type="button" class="btn btn-warning btn-sm" aria-label="Left Align" id=star-3>
+          <span class="fa fa-star" aria-hidden="true"></span>
+        </button></a>
+        <a href="{%url 'blog:rate' pk=object.pk value=4%}"><button type="button" class="btn btn-default btn-grey btn-sm" aria-label="Left Align" id=star-4>
+          <span class="fa fa-star" aria-hidden="true"></span>
+        </button></a>
+        <a href="{%url 'blog:rate' pk=object.pk value=5%}"><button type="button" class="btn btn-default btn-grey btn-sm" aria-label="Left Align" id=star-5>
+          <span class="fa fa-star" aria-hidden="true"></span>
+        </button></a>
+
+    </div>
+  </div>
+</div>
+<!-- comments -->
+<section class="comments" dir="rtl">
+  {% for comment in  object.comment_set.all %}
+    <article class="comment">
+        <div class="comment-body">
+          <div class="text">
+            <p>{{ comment.text }}</p>
+          </div>
+          <p class="attribution arabic-text">نشر من قبل 
+            <a href="{{object.writer.get_absolute_url}}">
+            {{comment.writer}}</a>في 
+            {{comment.create_date | date:"H:i   j-n-Y"}}</p>
+        </div>
+      </article>
+  {% endfor %}
+</section>​
+ 
 {% endblock content %}
-    
+
+{% block javascript %}
+  {{ block.super }}
+  <script src="{% static 'js/rate.js' %}"></script>
+  <script>
+    $( document ).ready(function() {
+      color({{rating}});
+  });
+  </script>
+{% endblock javascript %}

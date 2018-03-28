@@ -1,0 +1,15 @@
+.rate{
+  width: 500px;
+  margin: 20px auto;
+
+}
+.rating-block{
+    padding:15px 15px 20px 15px;
+    border-radius:3px;
+  }
+  .bold{
+    font-weight:700;
+  }
+  .padding-bottom-7{
+    padding-bottom:7px;
+  }
