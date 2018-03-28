@@ -49,7 +49,10 @@ class BlogPost(models.Model):
         return markdown(self.text)
 
     def get_rating_avg(self):
-        return self.objects.Ratings.aggregate(models.Avg('value'))
+        result = self.Ratings.aggregate(models.Avg('value'))['value__avg']
+        if not result:
+            return 0
+        return result
 
 
 class Comment(models.Model):
