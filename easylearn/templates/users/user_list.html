@@ -2,9 +2,16 @@
 {% load static i18n %}
 {% block title %}Members{% endblock %}
 
+{% block page_heading %}
+  المستخدمين
+{% endblock page_heading %}
+
+{% block page_subheading %}
+  
+{% endblock page_subheading %}
+  
 {% block content %}
-<div class="container">
-  <h2>Users</h2>
+<div class="container" dir="rtl">
 
   <div class="list-group">
     {% for user in user_list %}

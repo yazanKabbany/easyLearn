@@ -88,6 +88,9 @@
              <li class="nav-item">
               <a class="nav-link" href={% url 'about' %}>اتصل بنا</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href={% url 'users:list' %}>مستخدمين</a>
+            </li>
             <li class="nav-item">            
                 
                 {% if  user.is_authenticated%}

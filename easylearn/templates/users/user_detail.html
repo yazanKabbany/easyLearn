@@ -3,13 +3,20 @@
 
 {% block title %}User: {{ object.username }}{% endblock %}
 
+{% block page_heading %}
+  {{object.username}}
+{% endblock page_heading %}
+
+{% block page_subheading %}
+  
+{% endblock page_subheading %}
+  
+
 {% block content %}
 <div class="container">
 
   <div class="row">
     <div class="col-sm-12">
-
-      <h2>{{ object.username }}</h2>
       {% if object.name %}
         <p>{{ object.name }}</p>
       {% endif %}
