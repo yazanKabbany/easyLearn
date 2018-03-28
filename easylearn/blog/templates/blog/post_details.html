@@ -51,13 +51,14 @@
   <div class="col-md-6">
               <div class="widget-area no-padding blank">
               <div class="status-upload">
-                <form>
-                  <textarea placeholder="اكتب تعليقاً" ></textarea>
+                <form method="POST" action="{% url 'blog:comment' object.id %}">
+                    {% csrf_token %}
+                  <textarea placeholder="اكتب تعليقاً" name="text"></textarea>
                   <button type="submit" class="btn btn-primary"><i class="fa fa-share"></i>انشر</button>
                 </form>
               </div><!-- Status Upload  -->
-            </div><!-- Widget Area -->
-          </div>      
+              </div><!-- Widget Area -->
+  </div>      
   </div>
 
 <!-- comments -->

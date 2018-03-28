@@ -1,12 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import CreateView, DetailView, ListView
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponseBadRequest
 
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from blog.forms import BlogPostForm
-from blog.models import BlogPost, Following, Rating
+from blog.models import BlogPost, Following, Rating, Comment
 from easylearn.users.models import User
 # Create your views here.
 
@@ -93,3 +93,15 @@ def rate_view(request, pk, value):
     rating.value = value
     rating.save()
     return redirect(BlogPost.objects.get(pk=pk))
+
+@login_required
+def comment_view(request, pk):
+    user = request.user
+    post = get_object_or_404(BlogPost, pk=pk)
+    try:
+        text = request.POST['text']
+    except KeyError:
+        return HttpResponseBadRequest()
+    comment = Comment(writer=user, post=post, text=text)
+    comment.save()
+    return redirect(post)
