@@ -8,7 +8,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from blog.forms import BlogPostForm
 from blog.models import BlogPost, Following, Rating, Comment
 from easylearn.users.models import User
-# Create your views here.
+
+from markdown import markdown
 
 
 class BlogPostCreateView(LoginRequiredMixin, CreateView):
@@ -105,3 +106,14 @@ def comment_view(request, pk):
     comment = Comment(writer=user, post=post, text=text)
     comment.save()
     return redirect(post)
+
+@login_required
+def preview_view(request):
+    if request.method != 'POST':
+        return HttpResponseBadRequest()
+    try:
+        text = request.POST['text']
+    except KeyError:
+        return HttpResponseBadRequest()
+    html_text = markdown(text)
+    return render(request, 'blog/preview.html',{'text':html_text})

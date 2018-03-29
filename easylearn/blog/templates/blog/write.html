@@ -35,7 +35,9 @@
                 <div class="col-md-6 col-md-offset-3">
                         <form method="POST">
                                 {% csrf_token %} {{form.as_p}}
-                                <button type="submit" class="btn btn-primary">Post</button>
+                                <button type="submit" class="btn btn-primary">نشر</button>
+                                <button formaction="{% url 'blog:preview' %}" onclick="$('form').attr('target', '_blank');"
+                                 type="submit" class="btn btn-primary">معاينة</button>
                         </form>
                 </div>
         </div>
