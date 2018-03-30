@@ -54,11 +54,54 @@ class BlogPostFeedListView(LoginRequiredMixin, ListView):
         queryset = BlogPost.objects.filter(writer__in=followed_ids)
         return queryset
 
-
+### Model path is in easylearn/blog/ML_model folder
+def get_most_similar_articles_to_multiple_articles(list_of_arts ,
+    model_path='easylearn/blog/ML_model/small model'):
+    
+    # loading up the model
+    import os
+    model_path = os.path.abspath(model_path)
+    #'/media/yazan/OS/Users/Yazan/Desktop/wikilogia/Project/easylearn/easylearn/blog/ML_model/small model'
+    import gensim as gs
+    model = gs.models.doc2vec.Doc2Vec.load(model_path)
+    
+    vectors = []
+    for token in list_of_arts:
+        vectors.append(model.infer_vector(token))
+    
+    sims = model.docvecs.most_similar(vectors)
+    
+    def extract_id_from_slug(slug):
+        s = slug.split('_')[1]
+        return str(s)
+    
+    # here I am just converting the slug from the way it's written in the dataframe
+    # to the way it's written in the database
+    # this is how a slug looks in the dataframe : 'SENT_10'
+    # and this is how it looks in the database : 's_10'
+    convert_sent_to_s = lambda slug : 's_' + extract_id_from_slug(slug)
+    
+    resulted_list_of_slugs = []
+    for (slug,_) in sims:
+        resulted_list_of_slugs.append(convert_sent_to_s(slug))
+        
+    return resulted_list_of_slugs
+    
 class RecommendedBlogPostsListView(LoginRequiredMixin, ListView):
     model = BlogPost
-    #template_name = "TEMPLATE_NAME"
+    template_name = "blog/post_feed.html"
 
+    def get_queryset(self):
+        user = self.request.user
+        liked_articles = Rating.objects.filter(rater=user,value__gt=2
+        ).values_list('post__text', flat=True)[:10]
+        token_lists = []
+        for text in liked_articles:
+            token_lists.append(text.split())
+        slug_list = get_most_similar_articles_to_multiple_articles(token_lists)
+        queryset = BlogPost.objects.filter(slug__in=slug_list)
+        return queryset
+        
 
 @login_required
 def follow_view(request, username):
