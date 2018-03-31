@@ -2,6 +2,8 @@ easyLearn
 =========
 
 Educational blogging site with recommendation system
+Using the models in this repository: https://github.com/MohamedAliHabib/easyLearn-Arabic-Text-Recommender-System
+
 
 .. image:: https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg
      :target: https://github.com/pydanny/cookiecutter-django/
